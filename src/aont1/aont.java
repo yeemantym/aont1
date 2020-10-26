@@ -1,40 +1,17 @@
 //AONT (Bastion) first and then encrypt the fragments in parallel
 
 package aont1;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.stream.IntStream;
 import aont1.CryptoUtils;
-
 import javax.crypto.SecretKey;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+
 
 public class aont {
-	private static String readAllBytesJava7(String filePath) 
-    {
-        String content = "";
- 
-        try
-        {
-            content = new String ( Files.readAllBytes( Paths.get(filePath) ) );
-        } 
-        catch (IOException e) 
-        {
-            e.printStackTrace();
-        }
- 
-        return content;
-    }
 	
 	public static void main(String[] args) throws Exception{
 		long startTime = System.nanoTime();
-		//String originalString = "Hello";
-		String filePath = "/home/yeeman/Documents/300MB.txt";
-		String originalString = readAllBytesJava7( filePath );
+		String filePath = "/home/yeeman/Documents/500MB.txt";
 		
 		// encrypt and decrypt need the same key.
         // get AES 256 bits (32 bytes) key
@@ -44,7 +21,8 @@ public class aont {
         // AES-GCM needs IV 96-bit (12 bytes)
         byte[] iv = CryptoUtils.getRandomNonce(12);
         
-		byte[] inputArray = originalString.getBytes();
+		File file = new File(filePath);
+		byte[] inputArray = Files.readAllBytes(file.toPath());
 		
 		//apply Bastion AONT to inputArray
 		int t = 0;
