@@ -6,6 +6,7 @@ import javax.crypto.spec.GCMParameterSpec;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * AES-GCM inputs - 12 bytes IV, need the same IV and secret keys for encryption and decryption.
@@ -71,5 +72,4 @@ public class aes_gcm {
         String plainText = decrypt(cipherText, secret, iv);
         return plainText;
     }
-
 }
