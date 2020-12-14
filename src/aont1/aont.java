@@ -10,9 +10,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.stream.IntStream;
 
 
@@ -62,8 +59,8 @@ public class aont {
 		
 		
 		//INTSTREAM METHOD	
-	/*	//Fragmentation of inputArrayAONT into 4 fragments of constant size
-		List<byte[]> fragment = aont.splitArrayConstant(inputArrayAONT,2);
+		//Fragmentation of inputArrayAONT into 4 fragments of constant size
+		List<byte[]> fragment = aont.splitArrayConstant(inputArrayAONT,4);
 		
 		//Encrypt each fragment in parallel
 		List<byte[]> encryptedListBytes = new ArrayList<byte[]>();
@@ -76,46 +73,9 @@ public class aont {
 				e.printStackTrace();
 			}
 				encryptedListBytes.add(encrypt);
-		}); */
+		}); 
 		
-		final int numberOfThreads = 8;
-		final ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
-		final List<Future<byte[]>> futures = new ArrayList<>();
-	
-		byte encrypt[] = new byte[inputArray.length];
-		executor.submit(() -> {
-			return aes_gcm.encryptWithPrefixIV(inputArrayAONT, secretKey, iv);
-		});
-
-		for ( Future<byte[]> f : futures ) {
-			  encrypt = f.get(); // Will block until the result of the task is available.
-			  // Optionally do something with the result...
-		}
-
-		executor.shutdown(); // Release the threads held by the executor.
-
-		
-		
-		
-	
-	/*	IntStream.range(0, inputArray.length).parallel().forEach(i->{
-			encryptedArray[i]=aes.encrypt(Integer.toString(inputArrayAONT[i]), secretKey);
-		});*/
-
-	/*	System.out.println("encryptedArray:");
-		for (int i=0; i<encryptedArray.length; i++) {
-			if (i % 10 == 0 && i > 0) {
-	            System.out.println();
-	        } 
-			System.out.print(encryptedArray[i]);
-			if (i!=encryptedArray.length-1) {
-				System.out.print(", ");
-			}
-			else {
-				System.out.println();
-			}		
-		}*/
-		System.out.println("Length of encryptedArray: "+encrypt.length);		
+		System.out.println("Length of encryptedListBytes: "+encryptedListBytes.size());
 		long endTime = System.nanoTime();
 		System.out.println("Took "+(endTime - startTime) + " ns"); 
 		
